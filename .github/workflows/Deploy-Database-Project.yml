@@ -41,7 +41,7 @@ jobs:
       - name: Deploy the database project
         uses: azure/sql-action@v2.3
         with:
-          connectionString: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
-          path: '/home/runner/_work/Sample-Database-Project/Sample-Database-Project/SQL_DB_Project.dacpac'
+          connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+          path: './SQL_DB_Project.dacpac'
           action: Publish
           arguments: '/p:DropObjectsNotInSource=false'
