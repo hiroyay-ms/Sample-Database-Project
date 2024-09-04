@@ -26,3 +26,22 @@ jobs:
           name: db-project
           path: ${{ env.PRJ_PATH }}/bin/Release
 
+  deploy:
+    runs-on: self-hosted
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download artifact for deployment job
+        uses: actions/download-artifact@v2
+        with:
+          name: db-project
+      
+      - name: Deploy the database project
+        uses: azure/sql-action@v2.3
+        with:
+          connectionString: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+          path: ${{ env.PRJ_PATH }}/bin/Release/SQL_DB_Project.dacpac
+          action: Publish
+          arguments: '/p:DropObjectsNotInSource=false'
