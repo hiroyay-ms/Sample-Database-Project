@@ -31,6 +31,8 @@ jobs:
   
   push:
     runs-on: ubuntu-latest
+    env:
+      APP_PATH: './FunctionProj'
     needs: build
 
     steps:
