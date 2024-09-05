@@ -5,6 +5,8 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using FunctionProj.Data;
+using System.Runtime.InteropServices;
+using System.Data.Common;
 
 namespace functionproj
 {
@@ -20,14 +22,22 @@ namespace functionproj
         }
 
         [Function("GetProduct")]
-        public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req)
+        public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "Product/{id:int}")] HttpRequestData req, int id)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            var query = from p in _context.Products
-                        select new {
+            var query = from pc in _context.ProductCategories 
+                        join psc in _context.ProductCategories on pc.ProductCategoryId equals psc.ParentProductCategoryId 
+                        join p in _context.Products on psc.ProductCategoryId equals p.ProductCategoryId 
+                        join pm in _context.ProductModels on p.ProductModelId equals pm.ProductModelId 
+                        join pmd in _context.ProductModelProductDescriptions on pm.ProductModelId equals pmd.ProductModelId 
+                        join pd in _context.ProductDescriptions on pmd.ProductDescriptionId equals pd.ProductDescriptionId 
+                        where pmd.Culture == "en" && psc.ProductCategoryId == id  
+                        select new 
+                        {
                             p.ProductId,
                             p.ProductName,
+                            pm.ModelName,
                             p.ProductNumber,
                             p.Color,
                             p.StandardCost,
@@ -35,10 +45,12 @@ namespace functionproj
                             p.Size,
                             p.Weight,
                             p.ProductCategoryId,
-                            p.ProductModelId,
+                            CategoryName = pc.CategoryName,
+                            SubCategoryName = psc.CategoryName,
+                            pd.Description,
                             p.SellStartDate,
                             p.SellEndDate,
-                            p.ModifiedDate
+                            p.ThumbnailPhotoFileName
                         };
 
             var products = query.ToList();
