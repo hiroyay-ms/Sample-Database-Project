@@ -50,11 +50,6 @@ jobs:
           login-server: ${{ secrets.REGISTRY_LOGINSERVER }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
-
-      - name: test
-        run: |
-          pwd
-          ls
       
       - name: Docker Build
         run: docker build . -t ${{ secrets.REGISTRY_LOGINSERVER }}/function-app:${{ github.sha }} -f ${{ env.APP_PATH }}/Dockerfile
