@@ -43,6 +43,11 @@ jobs:
         with:
           name: function-app
           path: release
+
+      - name: test
+        run: |
+          pwd
+          ls ./release
         
       - name: Login via Azure Container Registry
         uses: azure/docker-login@v1
