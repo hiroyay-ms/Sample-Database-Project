@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: self-hosted
     env:
       PRJ_PATH: 'SQL_DB_Project'
 
@@ -18,13 +18,13 @@ jobs:
           dotnet-version: '8.0.x'
       
       - name: Build the database project
-        run: dotnet build ${{ env.PRJ_PATH }}\*.sqlproj -c Release
+        run: dotnet build ${{ env.PRJ_PATH }}/*.sqlproj -c Release
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: db-project
-          path: ${{ env.PRJ_PATH }}\bin\Release
+          path: ${{ env.PRJ_PATH }}/bin/Release
 
   deploy:
     runs-on: windows-latest
