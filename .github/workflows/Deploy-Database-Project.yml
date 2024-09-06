@@ -38,6 +38,13 @@ jobs:
         with:
           name: db-project
           path: Release
+
+      - name: test
+        run: |
+          pwd
+          ls
+          cd ./Release
+          ls
       
       - name: Deploy the database project
         uses: azure/sql-action@v2
