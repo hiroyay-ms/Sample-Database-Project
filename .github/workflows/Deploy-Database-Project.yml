@@ -32,7 +32,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
+      
       - name: Set up .NET
         uses: actions/setup-dotnet@v2
         with:
@@ -48,8 +48,9 @@ jobs:
           path: Release
       
       - name: Deploy the database project
-        uses: azure/sql-action@v2
+        uses: azure/sql-action@v2.3
         with:
           connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
           path: './Release/SQL_DB_Project.dacpac'
           action: Publish
+          arguments: '/p:DropObjectsNotInSource=false'
