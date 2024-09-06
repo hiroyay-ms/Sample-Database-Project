@@ -16,7 +16,7 @@ jobs:
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: '8.0.x'
-      
+
       - name: Build the database project
         run: dotnet build ${{ env.PRJ_PATH }}/*.sqlproj -c Release
       
@@ -27,11 +27,21 @@ jobs:
           path: ${{ env.PRJ_PATH }}/bin/Release
 
   deploy:
-    runs-on: windows-latest
+    #runs-on: windows-latest
+    runs-on: self-hosted
     needs: build
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '8.0.x'
+      
+      - name: Instal SqlPackage
+        run: |
+          dotnet tool install -g microsoft.sqlpackage
 
       - name: Download artifact for deployment job
         uses: actions/download-artifact@v2
@@ -39,10 +49,15 @@ jobs:
           name: db-project
           path: Release
       
+      # Azure SQL database with Allow Azure Services access enabled 
+      #- name: Deploy the database project
+      #  uses: azure/sql-action@v2.3
+      #  with:
+      #    connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+      #    path: '.\Release\SQL_DB_Project.dacpac'
+      #    action: Publish
+      #    arguments: '/p:DropObjectsNotInSource=false'
+
       - name: Deploy the database project
-        uses: azure/sql-action@v2.3
-        with:
-          connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
-          path: '.\Release\SQL_DB_Project.dacpac'
-          action: Publish
-          arguments: '/p:DropObjectsNotInSource=false'
+        run: |
+          SqlPackage /Action:Publish /SourceFile:./Release/SQL_DB_Project.dacpac /TargetConnectionString:"${{ secrets.AZURE_SQL_CONNECTION_STRING }}" /p:DropObjectsNotInSource=false
