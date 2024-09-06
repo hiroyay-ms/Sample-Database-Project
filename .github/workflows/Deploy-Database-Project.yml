@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: windows-latest
     env:
       PRJ_PATH: 'SQL_DB_Project'
 
@@ -27,19 +27,11 @@ jobs:
           path: ${{ env.PRJ_PATH }}/bin/Release
 
   deploy:
-    runs-on: self-hosted
+    runs-on: windows-latest
     needs: build
 
     steps:
       - uses: actions/checkout@v2
-      
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: '8.0.x'
-      - name: Install SqlPackage
-        run: |
-          dotnet tool install -g microsoft.sqlpackage
 
       - name: Download artifact for deployment job
         uses: actions/download-artifact@v2
