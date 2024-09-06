@@ -60,4 +60,6 @@ jobs:
 
       - name: Deploy the database project
         run: |
-          SqlPackage /Action:Publish /SourceFile:./Release/SQL_DB_Project.dacpac /TargetConnectionString:"${{ secrets.AZURE_SQL_CONNECTION_STRING }}" /p:DropObjectsNotInSource=false
+          cd /home/runner/.dotnet/tools
+          ls
+      #SqlPackage /Action:Publish /SourceFile:./Release/SQL_DB_Project.dacpac /TargetConnectionString:"${{ secrets.AZURE_SQL_CONNECTION_STRING }}" /p:DropObjectsNotInSource=false
