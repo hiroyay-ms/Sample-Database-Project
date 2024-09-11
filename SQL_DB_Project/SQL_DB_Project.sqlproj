@@ -13,6 +13,9 @@
   <ItemGroup>
     <PostDeploy Include="PostDeploymanetScript.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="PrepDatabaseScript.sql" />
+  </ItemGroup>
   <Target Name="BeforeBuild">
     <Delete Files="$(BaseIntermediateOutputPath)\project.assets.json" />
   </Target>
