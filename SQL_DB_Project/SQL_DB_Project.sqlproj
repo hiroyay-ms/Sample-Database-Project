@@ -10,6 +10,9 @@
   <ItemGroup>
     <None Include="SQL_DB_Project_local.publish.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="PostDeploymanetScript.sql" />
+  </ItemGroup>
   <Target Name="BeforeBuild">
     <Delete Files="$(BaseIntermediateOutputPath)\project.assets.json" />
   </Target>

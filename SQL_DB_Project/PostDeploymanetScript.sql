@@ -1,0 +1,7 @@
+INSERT INTO [dbo].[Country] VALUES ('JPN', SYSDATETIME());
+
+INSERT INTO [dbo].[Country] VALUES ('NZL', SYSDATETIME());
+
+INSERT INTO [dbo].[Country] VALUES ('AUS', SYSDATETIME());
+
+INSERT INTO [dbo].[Country] VALUES ('IND', SYSDATETIME());
