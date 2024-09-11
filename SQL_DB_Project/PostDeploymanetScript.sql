@@ -1,7 +1,7 @@
-INSERT INTO [dbo].[Country] VALUES ('日本', 'JPN', SYSDATETIME());
+INSERT INTO [dbo].[Country] VALUES ('Japan', 'JPN', SYSDATETIME());
 
-INSERT INTO [dbo].[Country] VALUES ('ニュージーランド', 'NZL', SYSDATETIME());
+INSERT INTO [dbo].[Country] VALUES ('New Zealand', 'NZL', SYSDATETIME());
 
-INSERT INTO [dbo].[Country] VALUES ('オーストラリア', 'AUS', SYSDATETIME());
+INSERT INTO [dbo].[Country] VALUES ('Australia', 'AUS', SYSDATETIME());
 
-INSERT INTO [dbo].[Country] VALUES ('インド', 'IND', SYSDATETIME());
+INSERT INTO [dbo].[Country] VALUES ('India', 'IND', SYSDATETIME());
