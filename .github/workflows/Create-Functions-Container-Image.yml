@@ -1,4 +1,4 @@
-name: Create Container Image
+name: Create Container Image (Azure Functions)
 
 on:
   workflow_dispatch:
