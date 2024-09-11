@@ -20,15 +20,6 @@ jobs:
       - name: Build the project
         run: dotnet build ${{ env.APP_PATH }} --configuration Release
 
-      - name: Publish the project
-        run: dotnet publish ${{ env.APP_PATH }} --configuration Release --output ${{ env.APP_PATH }}/bin/Release/net8.0
-      
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: webapi
-          path: ${{ env.APP_PATH }}/bin/Release/net8.0
-
   push:
     runs-on: ubuntu-latest
     env:
@@ -37,12 +28,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Download artifact for deployment job
-        uses: actions/download-artifact@v4
-        with:
-          name: webapi
-          path: release
         
       - name: Login via Azure Container Registry
         uses: azure/docker-login@v1
