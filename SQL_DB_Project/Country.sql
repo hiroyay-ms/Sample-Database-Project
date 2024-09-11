@@ -2,5 +2,6 @@ CREATE TABLE [dbo].[Country]
 (
   [CountryId] INT NOT NULL PRIMARY KEY IDENTITY,
   [Country] NVARCHAR(50) NOT NULL,
+  [Code] NVARCHAR(3) NOT NULL,
   [LastUpdate] DATETIME NOT NULL
 )
