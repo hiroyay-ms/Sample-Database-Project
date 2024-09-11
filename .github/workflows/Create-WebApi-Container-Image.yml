@@ -1,0 +1,19 @@
+name: Create Container Image (WebApi)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      APP_PATH: './FunctionProj'
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up .Net
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+      
