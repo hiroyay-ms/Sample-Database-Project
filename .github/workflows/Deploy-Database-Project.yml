@@ -21,7 +21,7 @@ jobs:
         run: dotnet build ${{ env.PRJ_PATH }}/*.sqlproj -c Release
       
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: db-project
           path: ${{ env.PRJ_PATH }}/bin/Release
@@ -35,7 +35,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Set up .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v2
         with:
           dotnet-version: '8.0.x'
       
