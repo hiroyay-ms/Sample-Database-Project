@@ -1,4 +1,4 @@
-name: Create Container Image (WebApi)
+name: Create Container Image (ASP.NET Core WebApi)
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      APP_PATH: './FunctionProj'
+      APP_PATH: './WebApiProj'
     
     steps:
       - uses: actions/checkout@v3
@@ -15,5 +15,44 @@ jobs:
       - name: Set up .Net
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '8.x'
       
+      - name: Build the project
+        run: dotnet build ${{ env.APP_PATH }} --configuration Release
+
+      - name: Publish the project
+        run: dotnet publish ${{ env.APP_PATH }} --configuration Release --output ${{ env.APP_PATH }}/bin/Release/net8.0
+      
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: webapi
+          path: ${{ env.APP_PATH }}/bin/Release/net8.0
+
+  push:
+    runs-on: ubuntu-latest
+    env:
+      APP_PATH: './WebApiProj'
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download artifact for deployment job
+        uses: actions/download-artifact@v4
+        with:
+          name: webapi
+          path: release
+        
+      - name: Login via Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY_LOGINSERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      
+      - name: Docker Build
+        run: docker build . -t ${{ secrets.REGISTRY_LOGINSERVER }}/webapi:${{ github.sha }} -f ${{ env.APP_PATH }}/Dockerfile
+      
+      - name: Docker Push
+        run: docker push ${{ secrets.REGISTRY_LOGINSERVER }}/webapi:${{ github.sha }}
