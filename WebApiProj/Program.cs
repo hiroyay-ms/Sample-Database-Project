@@ -13,7 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<ITelemetryInitializer, AppInsightsTelemetryInitializer>();
+builder.Services.AddApplicationInsightsTelemetry();
 
 var connectionString = builder.Configuration["SQL_CONNECTION_STRING"];
 builder.Services.AddDbContext<AdventureWorksContext>(options => options.UseSqlServer(connectionString));
