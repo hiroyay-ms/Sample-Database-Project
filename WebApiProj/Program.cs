@@ -13,8 +13,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// builder.Services.AddApplicationInsightsTelemetry();
-builder.Services.AddSingleton<ITelemetryInitializer, AppInsightsTelemetryInitializer>();
+builder.Services.AddApplicationInsightsTelemetry();
+builder.Services.Configure<TelemetryConfiguration>(config =>
+{
+    config.TelemetryInitializers.Add(new AppInsightsTelemetryInitializer());
+});
 
 var connectionString = builder.Configuration["SQL_CONNECTION_STRING"];
 builder.Services.AddDbContext<AdventureWorksContext>(options => options.UseSqlServer(connectionString));
